@@ -15,6 +15,8 @@ GROSS_RENT_PERCENT_INCOME_35_39 = 'B25070_008E'
 GROSS_RENT_PERCENT_INCOME_40_49 = 'B25070_009E'
 GROSS_RENT_PERCENT_INCOME_50_PLUS = 'B25070_010E'
 TOTAL_POPULATION = 'B01003_001E'
+POPULATION_IN_POVERTY = 'B17001_002E'
+TEST = 'B17003_001E'
 
 MED_INCOME = 'B06011_001E'
 COMMA = ','
@@ -69,3 +71,22 @@ population = {}
 for i in range(1,len(values)):
     population[int(values[i][2])] = int(values[i][0])
 
+# FINAL_URL = BASE_URL \
+# + GET + POPULATION_IN_POVERTY \
+# + FOR + COUNTY + "*" \
+# + IN + STATE + OREGON
+
+# r = requests.get(url = FINAL_URL + API_KEY)
+# values = r.json()
+# pop_in_poverty = {}
+# print(values)
+
+# FINAL_URL = BASE_URL \
+# + GET + TEST \
+# + FOR + COUNTY + "*" \
+# + IN + STATE + OREGON
+
+# r = requests.get(url = FINAL_URL + API_KEY)
+# values = r.json()
+# pop_in_poverty = {}
+# print(values)
