@@ -1,6 +1,7 @@
 import requests
 import config
 
+# API setup and variables
 API_KEY = config.CENSUS_API_KEY
 URL = 'https://api.census.gov/data/'
 YEAR = '2018/'
@@ -18,7 +19,6 @@ TOTAL_POPULATION = 'B01003_001E'
 POPULATION_IN_POVERTY = 'B17001_002E'
 TEST = 'B17003_001E'
 
-MED_INCOME = 'B06011_001E'
 COMMA = ','
 FOR = '&for='
 IN = '&in='
@@ -31,7 +31,7 @@ DESCHUTES = '017'
 CROOK = '013'
 JEFFERSON = '031'
 
-
+# one of many query strings
 FINAL_URL = BASE_URL \
 + GET + GROSS_RENT_PERCENT_INCOME_50_PLUS \
 + FOR + COUNTY + "*" \
@@ -72,7 +72,7 @@ for i in range(1,len(values)):
     fips_population[values[i][2]] = int(values[i][0])
 
 
-# TODO
+# TODO  POVERTY RATES
 # FINAL_URL = BASE_URL \
 # + GET + POPULATION_IN_POVERTY \
 # + FOR + COUNTY + "*" \
@@ -136,6 +136,7 @@ population = {}
 severe_burden_total = {}
 rent_burden_total = {}
 
+# make new dicts with key as county name instead of fips
 for key in fips_codes:
     if key in fips_population:
         population[fips_codes[key]] = fips_population[key]
@@ -153,6 +154,7 @@ for key in fips_codes:
 
 severe_rent_burdened_by_pop = {}
 rent_burdened_by_pop = {}
+# new dicts with rent burden/pop as percent
 for key in population:
     if key in rent_burden_total:
         # x100 to shift decimal into percent
