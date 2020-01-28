@@ -1,0 +1,58 @@
+import requests
+import  csv
+import config
+
+API_KEY = config.CENSUS_API_KEY
+URL = 'https://api.census.gov/data/'
+YEAR = '2018/'
+DATA_SET = 'acs/acs5'
+BASE_URL = URL + YEAR + DATA_SET
+GET = '?get='
+MED_GROSS_RENT = 'B25064_001E'
+MED_GROSS_RENT_DOLLARS = 'B25064_001E'
+GROSS_RENT_TOTAL = 'B25063_001E'
+GROSS_RENT_PERCENT_INCOME_30_34 = 'B25070_007E'
+GROSS_RENT_PERCENT_INCOME_35_39 = 'B25070_008E'
+GROSS_RENT_PERCENT_INCOME_40_49 = 'B25070_009E'
+GROSS_RENT_PERCENT_INCOME_50_PLUS = 'B25070_010E'
+
+MED_INCOME = 'B06011_001E'
+COMMA = ','
+FOR = '&for='
+IN = '&in='
+PLUS = '+'
+STATE = 'state:'
+ALL_STATES = 'state:*'
+COUNTY = 'county:'
+OREGON = '41'
+DESCHUTES = '017'
+CROOK = '013'
+JEFFERSON = '031'
+
+
+# FINAL_URL = BASE_URL \
+# + GET + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA + GROSS_RENT_PERCENT_INCOME_35_39 + COMMA \
+# + GROSS_RENT_PERCENT_INCOME_40_49 \
+# + FOR + COUNTY + DESCHUTES \
+# + IN + STATE + OREGON
+
+FINAL_URL = BASE_URL \
++ GET + GROSS_RENT_PERCENT_INCOME_50_PLUS \
++ FOR + COUNTY + "*" \
++ IN + STATE + OREGON
+
+r = requests.get(url = FINAL_URL + API_KEY)
+values = r.json()
+severe_burden = {}
+
+# get sever rent burdening
+for i in range(1,len(values)):
+    severe_burden[values[i][2]] = values[i][0]
+
+FINAL_URL = BASE_URL \
++ GET + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA +  GROSS_RENT_PERCENT_INCOME_35_39 + COMMA + GROSS_RENT_PERCENT_INCOME_40_49\
++ FOR + COUNTY + "*" \
++ IN + STATE + OREGON
+
+r = requests.get(url = FINAL_URL + API_KEY)
+values = r.json()
