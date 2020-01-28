@@ -1,5 +1,4 @@
 import requests
-import  csv
 import config
 
 API_KEY = config.CENSUS_API_KEY
@@ -15,6 +14,7 @@ GROSS_RENT_PERCENT_INCOME_30_34 = 'B25070_007E'
 GROSS_RENT_PERCENT_INCOME_35_39 = 'B25070_008E'
 GROSS_RENT_PERCENT_INCOME_40_49 = 'B25070_009E'
 GROSS_RENT_PERCENT_INCOME_50_PLUS = 'B25070_010E'
+TOTAL_POPULATION = 'B01003_001E'
 
 MED_INCOME = 'B06011_001E'
 COMMA = ','
@@ -55,3 +55,17 @@ rent_burden = {}
 # get sum population of rent burdening by county
 for i in range(1,len(values)):
     rent_burden[int(values[i][4])] = int(values[i][0]) + int(values[i][1]) + int(values[i][2])
+
+FINAL_URL = BASE_URL \
++ GET + TOTAL_POPULATION \
++ FOR + COUNTY + "*" \
++ IN + STATE + OREGON
+
+r = requests.get(url = FINAL_URL + API_KEY)
+values = r.json()
+population = {}
+
+# get total population of oregon counties
+for i in range(1,len(values)):
+    population[int(values[i][2])] = int(values[i][0])
+
