@@ -39,11 +39,11 @@ FINAL_URL = BASE_URL \
 
 r = requests.get(url = FINAL_URL + API_KEY)
 values = r.json()
-severe_burden = {}
+fips_severe_burden = {}
 
 # get population of severe rent burdening by county
 for i in range(1,len(values)):
-    severe_burden[int(values[i][2])] = int(values[i][0])
+    fips_severe_burden[values[i][2]] = int(values[i][0])
 
 FINAL_URL = BASE_URL \
 + GET + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA +  GROSS_RENT_PERCENT_INCOME_35_39 + COMMA + GROSS_RENT_PERCENT_INCOME_40_49\
@@ -52,11 +52,11 @@ FINAL_URL = BASE_URL \
 
 r = requests.get(url = FINAL_URL + API_KEY)
 values = r.json()
-rent_burden = {}
+fips_rent_burden = {}
 
 # get sum population of rent burdening by county
 for i in range(1,len(values)):
-    rent_burden[int(values[i][4])] = int(values[i][0]) + int(values[i][1]) + int(values[i][2])
+    fips_rent_burden[values[i][4]] = int(values[i][0]) + int(values[i][1]) + int(values[i][2])
 
 FINAL_URL = BASE_URL \
 + GET + TOTAL_POPULATION \
@@ -65,12 +65,14 @@ FINAL_URL = BASE_URL \
 
 r = requests.get(url = FINAL_URL + API_KEY)
 values = r.json()
-population = {}
+fips_population = {}
 
 # get total population of oregon counties
 for i in range(1,len(values)):
-    population[int(values[i][2])] = int(values[i][0])
+    fips_population[values[i][2]] = int(values[i][0])
 
+
+# TODO
 # FINAL_URL = BASE_URL \
 # + GET + POPULATION_IN_POVERTY \
 # + FOR + COUNTY + "*" \
@@ -90,3 +92,76 @@ for i in range(1,len(values)):
 # values = r.json()
 # pop_in_poverty = {}
 # print(values)
+
+fips_codes = {
+"001" : "Baker",
+"003" : "Benton",
+"005" : "Clackamas",
+"007" : "Clatsop",
+"009" : "Columbia",
+"011" : "Coos",
+"013" : "Crook",
+"015" : "Curry",
+"017" : "Deschutes",
+"019" : "Douglas",
+"021" : "Gilliam",
+"023" : "Grant",
+"025" : "Harney",
+"027" : "Hood River",
+"029" : "Jackson",
+"031" : "Jefferson",
+"033" : "Josephine",
+"035" : "Klamath",
+"037" : "Lake",
+"039" : "Lane",
+"041" : "Lincoln",
+"043" : "Linn",
+"045" : "Malheur",
+"047" : "Marion",
+"049" : "Morrow",
+"051" : "Multnomah",
+"053" : "Polk",
+"055" : "Sherman",
+"057" : "Tillamook",
+"059" : "Umatilla",
+"061" : "Union",
+"063" : "Wallowa",
+"065" : "Wasco",
+"067" : "Washington",
+"069" : "Wheeler",
+"071" : "Yamhill"
+}
+
+population = {}
+severe_burden_total = {}
+rent_burden_total = {}
+
+for key in fips_codes:
+    if key in fips_population:
+        population[fips_codes[key]] = fips_population[key]
+        severe_burden_total[fips_codes[key]] = fips_severe_burden[key]
+        rent_burden_total[fips_codes[key]] = fips_rent_burden[key]
+
+# print("pop: \n")
+# print(population)
+# print(" ")
+# print("sev burden: \n")
+# print(severe_burden_total)
+# print(" ")
+# print("burden: \n")
+# print(rent_burden_total)
+
+severe_rent_burdened_by_pop = {}
+rent_burdened_by_pop = {}
+for key in population:
+    if key in rent_burden_total:
+        # x100 to shift decimal into percent
+        severe_rent_burdened_by_pop[key] = 100 * (severe_burden_total[key] / population[key])
+        rent_burdened_by_pop[key] = 100 * (rent_burden_total[key] / population[key])
+
+# print("severe rent burdened: ")
+# print(severe_rent_burdened_by_pop)
+# print("")
+# print("rent burdened:")
+# print(rent_burdened_by_pop)
+
