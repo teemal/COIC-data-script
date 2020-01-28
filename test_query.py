@@ -15,7 +15,7 @@ GROSS_RENT_PERCENT_INCOME_30_34 = 'B25070_007E'
 GROSS_RENT_PERCENT_INCOME_35_39 = 'B25070_008E'
 GROSS_RENT_PERCENT_INCOME_40_49 = 'B25070_009E'
 GROSS_RENT_PERCENT_INCOME_50_PLUS = 'B25070_010E'
-TOTAL_POPULATION = 'B01003_001E'
+TOTAL_POPULATION_BURDENED = 'B25070_001E'
 POPULATION_IN_POVERTY = 'B17001_002E'
 TEST = 'B17003_001E'
 
@@ -59,7 +59,7 @@ for i in range(1,len(values)):
     fips_rent_burden[values[i][4]] = int(values[i][0]) + int(values[i][1]) + int(values[i][2])
 
 FINAL_URL = BASE_URL \
-+ GET + TOTAL_POPULATION \
++ GET + TOTAL_POPULATION_BURDENED \
 + FOR + COUNTY + "*" \
 + IN + STATE + OREGON
 
@@ -161,9 +161,9 @@ for key in population:
         severe_rent_burdened_by_pop[key] = 100 * (severe_burden_total[key] / population[key])
         rent_burdened_by_pop[key] = 100 * (rent_burden_total[key] / population[key])
 
-# print("severe rent burdened: ")
-# print(severe_rent_burdened_by_pop)
-# print("")
-# print("rent burdened:")
-# print(rent_burdened_by_pop)
+print("severe rent burdened: ")
+print(severe_rent_burdened_by_pop)
+print("")
+print("rent burdened:")
+print(rent_burdened_by_pop)
 
