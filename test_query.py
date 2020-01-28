@@ -30,12 +30,6 @@ CROOK = '013'
 JEFFERSON = '031'
 
 
-# FINAL_URL = BASE_URL \
-# + GET + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA + GROSS_RENT_PERCENT_INCOME_35_39 + COMMA \
-# + GROSS_RENT_PERCENT_INCOME_40_49 \
-# + FOR + COUNTY + DESCHUTES \
-# + IN + STATE + OREGON
-
 FINAL_URL = BASE_URL \
 + GET + GROSS_RENT_PERCENT_INCOME_50_PLUS \
 + FOR + COUNTY + "*" \
@@ -45,9 +39,9 @@ r = requests.get(url = FINAL_URL + API_KEY)
 values = r.json()
 severe_burden = {}
 
-# get sever rent burdening
+# get population of severe rent burdening by county
 for i in range(1,len(values)):
-    severe_burden[values[i][2]] = values[i][0]
+    severe_burden[int(values[i][2])] = int(values[i][0])
 
 FINAL_URL = BASE_URL \
 + GET + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA +  GROSS_RENT_PERCENT_INCOME_35_39 + COMMA + GROSS_RENT_PERCENT_INCOME_40_49\
@@ -56,3 +50,8 @@ FINAL_URL = BASE_URL \
 
 r = requests.get(url = FINAL_URL + API_KEY)
 values = r.json()
+rent_burden = {}
+
+# get sum population of rent burdening by county
+for i in range(1,len(values)):
+    rent_burden[int(values[i][4])] = int(values[i][0]) + int(values[i][1]) + int(values[i][2])
