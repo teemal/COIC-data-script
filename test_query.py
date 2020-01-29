@@ -1,5 +1,7 @@
 import requests
 import config
+import xlsxwriter
+
 
 # API setup and variables
 API_KEY = config.CENSUS_API_KEY
@@ -166,4 +168,20 @@ print(severe_rent_burdened_by_pop)
 print("")
 print("rent burdened:")
 print(rent_burdened_by_pop)
+
+workbook = xlsxwriter.Workbook('data.xlsx')
+worksheet = workbook.add_worksheet()
+row = 0
+col = 0
+col_names = ['county', 'population rent burdened', 'population severly rent burdened']
+for i in col_names:
+    worksheet.write(row, col, i)
+    col +=1
+row = 1
+col = 0
+for i in population.keys():
+    worksheet.write(row, col, i)
+    row += 1
+
+workbook.close()
 
