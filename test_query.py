@@ -173,15 +173,24 @@ workbook = xlsxwriter.Workbook('data.xlsx')
 worksheet = workbook.add_worksheet()
 row = 0
 col = 0
-col_names = ['county', 'population rent burdened', 'population severly rent burdened']
+col_names = ['county', 'population', 'population rent burdened', 'population severly rent burdened']
 for i in col_names:
     worksheet.write(row, col, i)
     col +=1
 row = 1
 col = 0
-for i in population.keys():
-    worksheet.write(row, col, i)
-    row += 1
+# there's probably a really slick way to  do this with a lambda
+# but I'm tired and this works
+for i in population:
+    worksheet.write(row,col,i)
+    col += 1
+    worksheet.write(row,col,population[i])
+    col += 1
+    worksheet.write(row,col,rent_burdened_by_pop[i])
+    col += 1
+    worksheet.write(row,col,severe_rent_burdened_by_pop[i])
+    row +=1
+    col = 0
 
 workbook.close()
 
