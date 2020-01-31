@@ -191,6 +191,5 @@ for i in population:
     worksheet.write(row,col,severe_rent_burdened_by_pop[i])
     row +=1
     col = 0
-
 workbook.close()
 
