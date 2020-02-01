@@ -83,6 +83,7 @@ FINAL_URL = BASE_URL \
     + IN + STATE + OREGON
 
 r = requests.get(url=FINAL_URL + API_KEY)
+# values is the return value from the census  API
 values = r.json()
 fips_severe_burden = {}
 
@@ -144,7 +145,7 @@ for i in range(1, NUM_HOUSEHOLD_INCOME_VARIABLES + 1):
         # household_incom = {Marion: [5690]}
         household_incomes[fips_codes[values[i][2]]].append(int(values[i][0]))
 
-print(household_incomes)
+# print(household_incomes)
 # ============make new dicts with key as county name instead of fips=====================
 population = {}
 severe_burden_total = {}
@@ -184,27 +185,68 @@ for key in population:
 
 
 # ===========================XLS STUFF=====================================================
-# workbook = xlsxwriter.Workbook('data.xlsx')
-# worksheet = workbook.add_worksheet('rent_burdening')
-# row = 0
-# col = 0
-# col_names = ['county', 'population', 'population rent burdened',
-#              'population severly rent burdened']
-# for i in col_names:
-#     worksheet.write(row, col, i)
-#     col += 1
-# row = 1
-# col = 0
-# # there's probably a really slick way to  do this with a lambda
-# # but I'm tired and this works
-# for i in population:
-#     worksheet.write(row, col, i)
-#     col += 1
-#     worksheet.write(row, col, population[i])
-#     col += 1
-#     worksheet.write(row, col, rent_burdened_by_pop[i])
-#     col += 1
-#     worksheet.write(row, col, severe_rent_burdened_by_pop[i])
-#     row += 1
-#     col = 0
-# workbook.close()
+workbook = xlsxwriter.Workbook('data.xlsx')
+worksheet = workbook.add_worksheet('rent_burdening')
+row = 0
+col = 0
+col_names = ['county', 'population', 'population rent burdened',
+             'population severly rent burdened']
+for i in col_names:
+    worksheet.write(row, col, i)
+    col += 1
+row = 1
+col = 0
+# there's probably a really slick way to  do this with a lambda
+# but I'm tired and this works
+for i in population:
+    worksheet.write(row, col, i)
+    col += 1
+    worksheet.write(row, col, population[i])
+    col += 1
+    worksheet.write(row, col, rent_burdened_by_pop[i])
+    col += 1
+    worksheet.write(row, col, severe_rent_burdened_by_pop[i])
+    row += 1
+    col = 0
+
+
+income_brackets = [
+"Less than $10,000",
+"$10,000 to $14,999",
+"$15,000 to $19,999",
+"$20,000 to $24,999",
+"$25,000 to $29,999",
+"$30,000 to $34,999",
+"$35,000 to $39,999",
+"$40,000 to $44,999",
+"$45,000 to $49,999",
+"$50,000 to $59,999",
+"$60,000 to $74,999",
+"$75,000 to $99,999",
+"$100,000 to $124,999",
+"$125,000 to $149,999",
+"$150,000 to $199,999",
+"$200,000 or more"
+]
+
+# new sheet
+worksheet = workbook.add_worksheet('household incomes')
+row = 0
+col = 0
+# write header to sheet
+worksheet.write(row, col, 'county')
+for i in income_brackets:
+    col += 1
+    worksheet.write(row, col, i)
+
+# write incomes per county by brackets to sheet
+row = 1
+col = 0
+for key in household_incomes:
+    worksheet.write(row,col,key)
+    for i in household_incomes[key]:
+        col += 1
+        worksheet.write(row,col,i)
+    col = 0
+    row += 1
+workbook.close()
