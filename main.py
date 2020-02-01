@@ -33,7 +33,12 @@ DESCHUTES = '017'
 CROOK = '013'
 JEFFERSON = '031'
 
-# one of many query strings
+# one of many query strings. Below is an example of the string directly below it
+# FINAL_URL = https://api.census.gov/data/2018/acs/acs5?get=B25070_010E&for=county:*&in=state:41
+# this string will get the population of individuals that pay 50% or more of their income
+# in rent for all counties in oregon.
+# It returns a list of lists. The first list containing meta data and the following lists containing the requested info.
+# i.e. one list being ['5690', '41', '047'], meaning 5690 people spend 50% or more of their income in the county 047 (FIPS code) in the state 41 (FIPS code for Oregon)
 FINAL_URL = BASE_URL \
     + GET + GROSS_RENT_PERCENT_INCOME_50_PLUS \
     + FOR + COUNTY + "*" \
