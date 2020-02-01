@@ -126,7 +126,7 @@ for values in fips_codes.values():
     household_incomes[values] = []
 
 NUM_HOUSEHOLD_INCOME_VARIABLES = 17
-for i in range(1, NUM_HOUSEHOLD_INCOME_VARIABLES + 1):
+for i in range(2, NUM_HOUSEHOLD_INCOME_VARIABLES + 1):
     # B19001_00 + i + E is a range of income variables in the acs5
     FINAL_URL = BASE_URL \
         + GET + ('B19001_00' if i < 10 else 'B19001_0') + str(i) + 'E' \
