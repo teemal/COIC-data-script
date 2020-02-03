@@ -56,7 +56,6 @@ GROSS_RENT_PERCENT_INCOME_35_39 = 'B25070_008E'
 GROSS_RENT_PERCENT_INCOME_40_49 = 'B25070_009E'
 GROSS_RENT_PERCENT_INCOME_50_PLUS = 'B25070_010E'
 TOTAL_POPULATION_BURDENED = 'B25070_001E'
-HOUSEHOLD_INCOME = 'B19001_00{}E'
 
 
 COMMA = ','
@@ -144,6 +143,23 @@ for i in range(2, NUM_HOUSEHOLD_INCOME_VARIABLES + 1):
         # household_incomes[Marion].append(int(5690)
         # household_incom = {Marion: [5690]}
         household_incomes[fips_codes[values[i][2]]].append(int(values[i][0]))
+
+trends = {}
+for values in fips_codes.values():
+    trends[values] = []
+# ==========TRENDS IN RENT AND SEVERE BURDENING FROM 2011 to 2018==========================================
+for i in range(2011,2019):
+    FINAL_URL =  URL + str(i) + '/' + DATA_SET\
+    + GET + TOTAL_POPULATION_BURDENED + COMMA + GROSS_RENT_PERCENT_INCOME_50_PLUS + COMMA + MED_GROSS_RENT_DOLLARS\
+    + FOR + COUNTY + "*" \
+    + IN + STATE + OREGON
+
+    r = requests.get(url=FINAL_URL + API_KEY)
+    values = r.json()
+    for i in range(1, len(values)):
+        trends[fips_codes[values[i][4]]].append(int(values[i][0])/int(values[i][1]))
+        trends[fips_codes[values[i][4]]].append(int(values)[i][2])
+print(trends)
 
 # print(household_incomes)
 # ============make new dicts with key as county name instead of fips=====================
