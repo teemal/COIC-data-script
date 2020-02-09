@@ -163,8 +163,6 @@ for i in range(2011,2019):
         trends[fips_codes[values[i][7]]].append(100 * ((int(values[i][2])) + (int(values[i][3])) + (int(values[i][4])))/int(values[i][0]))
         trends[fips_codes[values[i][7]]].append(int(values[i][5]))
 
-print(trends)
-
 # print(household_incomes)
 # ============make new dicts with key as county name instead of fips=====================
 population = {}
@@ -209,7 +207,7 @@ workbook = xlsxwriter.Workbook('data.xlsx')
 worksheet = workbook.add_worksheet('rent_burdening')
 row = 0
 col = 0
-col_names = ['county', 'population', 'population rent burdened',
+col_names = ['county', 'sample population', 'population rent burdened',
              'population severly rent burdened']
 for i in col_names:
     worksheet.write(row, col, i)
@@ -269,4 +267,37 @@ for key in household_incomes:
         worksheet.write(row,col,i)
     col = 0
     row += 1
+
+# new sheet
+worksheet = workbook.add_worksheet('historic data')
+row = 0
+col = 0
+columns = ['county', 'severe rent burdening', 'rent burdening', 'median gross income']
+# write header to sheet
+for i in columns:
+    worksheet.write(row, col, i)
+    col += 1
+
+# write counties and years (2011 - 2018) to xls
+row = 1
+col = 0
+start_year = 2011
+end_year = 2018
+for key in trends:
+    for i in range(start_year, end_year + 1):
+        worksheet.write(row,col, key + str(i))
+        row += 1
+
+row = 1
+col = 1
+# this goes through the sheet and adds count+year then three data columns (severe, burdened, median gross income)
+# then it drops a row and starts the process over starting at column 0
+for key in trends:
+    for i in trends[key]:
+        if (col > 3):
+            col = 1
+            row += 1
+        worksheet.write(row, col, i)
+        col += 1
 workbook.close()
+print("done")
