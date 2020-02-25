@@ -207,8 +207,8 @@ workbook = xlsxwriter.Workbook('data.xlsx')
 worksheet = workbook.add_worksheet('rent_burdening')
 row = 0
 col = 0
-col_names = ['county', 'sample population', 'population rent burdened',
-             'population severly rent burdened']
+col_names = ['county', 'sample population', 'percent rent burdened',
+             'percent severly rent burdened']
 for i in col_names:
     worksheet.write(row, col, i)
     col += 1
