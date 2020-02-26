@@ -1,3 +1,5 @@
+import config
+
 COUNTY_CODES = {
     "001": "Baker",
     "003": "Benton",

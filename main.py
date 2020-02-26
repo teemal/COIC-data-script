@@ -30,7 +30,6 @@ household_incomes = get_household_incomes()
 # ==========TRENDS IN RENT AND SEVERE BURDENING FROM 2011 to 2018==========================================
 trends = get_rent_burden_trends()
 
-# print(household_incomes)
 # ============make new dicts with key as county name instead of fips=====================
 population = {}
 severe_burden_total = {}
@@ -42,14 +41,6 @@ for key in COUNTY_CODES:
         severe_burden_total[COUNTY_CODES[key]] = severe_burden_population[key]
         rent_burden_total[COUNTY_CODES[key]] = sum_severe_burden[key]
 
-# print("pop: \n")
-# print(population)
-# print(" ")
-# print("sev burden: \n")
-# print(severe_burden_total)
-# print(" ")
-# print("burden: \n")
-# print(rent_burden_total)
 
 severe_rent_burdened_by_pop = {}
 rent_burdened_by_pop = {}
@@ -62,15 +53,9 @@ for key in population:
         rent_burdened_by_pop[key] = 100 * \
             (rent_burden_total[key] / population[key])
 
-# print("severe rent burdened: ")
-# print(severe_rent_burdened_by_pop)
-# print("")
-# print("rent burdened:")
-# print(rent_burdened_by_pop)
-
 
 # ===========================XLS STUFF=====================================================
-workbook = xlsxwriter.Workbook('data.xlsx')
+workbook = xlsxwriter.Workbook('data2.xlsx')
 
 create_rent_burdening(workbook, population, rent_burdened_by_pop, severe_rent_burdened_by_pop)
 

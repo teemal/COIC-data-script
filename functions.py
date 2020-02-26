@@ -57,9 +57,12 @@ def get_household_incomes():
 
 
 def get_rent_burden_trends():
-  trends = {}
-  for values in COUNTY_CODES.values():
-    trends[values] = []
+  trends = {
+    "Crook": [],
+    "Deschutes": [], 
+    "Jefferson":[]
+  }
+
     
 # ==========TRENDS IN RENT AND SEVERE BURDENING FROM 2011 to 2018==========================================
   for i in range(2011,2019):
@@ -67,7 +70,7 @@ def get_rent_burden_trends():
     + GET + TOTAL_POPULATION_BURDENED + COMMA + GROSS_RENT_PERCENT_INCOME_50_PLUS + COMMA\
     + GROSS_RENT_PERCENT_INCOME_30_34 + COMMA + GROSS_RENT_PERCENT_INCOME_35_39 + COMMA + GROSS_RENT_PERCENT_INCOME_40_49\
     + COMMA + MED_GROSS_RENT\
-    + FOR + COUNTY + "*" \
+    + FOR + COUNTY + CROOK + COMMA + DESCHUTES + COMMA + JEFFERSON \
     + IN + STATE + OREGON
 
     values = requests.get(url=FINAL_URL + API_KEY).json()
@@ -89,6 +92,9 @@ def create_rent_burdening(workbook, population, rent_burdened_by_pop, severe_ren
   col = 0
   col_names = ['county', 'population', '"%"rent burdened','"%" severely rent burdened']
 
+  worksheet.set_column(0,1,10)
+  worksheet.set_column(2,2,15)
+  worksheet.set_column(3,3,24)
   for i in col_names:
     worksheet.write(row, col, i)
     col += 1
@@ -113,6 +119,7 @@ def create_household_incomes(workbook, household_incomes):
   col = 0
   # write header to sheet
   worksheet.write(row, col, 'county')
+  worksheet.set_column(0,len(income_brackets),15)
   for i in income_brackets:
     col += 1
     worksheet.write(row, col, i)
@@ -132,8 +139,10 @@ def create_historical_data(workbook,trends):
   worksheet = workbook.add_worksheet('historic data')
   row = 0
   col = 0
-  columns = ['county', 'severe rent burdening', 'rent burdening', 'median gross income']
+  columns = ['county',"Year", '"%"severe rent burdening', '"%"rent burdening', 'median gross income']
 
+  worksheet.set_column(0,1,10)
+  worksheet.set_column(2,5,22)
   # write header to sheet
   for i in columns:
     worksheet.write(row, col, i)
@@ -141,22 +150,24 @@ def create_historical_data(workbook,trends):
 
   # write counties and years (2011 - 2018) to xls
   row = 1
-  col = 0
+  county_col = 0
+  year_col = 1
   start_year = 2011
   end_year = 2018
   for key in trends:
     for i in range(start_year, end_year + 1):
-        worksheet.write(row,col, key + str(i))
+        worksheet.write(row,county_col, key )
+        worksheet.write(row, year_col, str(i))
         row += 1
 
   row = 1
-  col = 1
+  col = 2
   # this goes through the sheet and adds count+year then three data columns (severe, burdened, median gross income)
   # then it drops a row and starts the process over starting at column 0
   for key in trends:
     for i in trends[key]:
-        if (col > 3):
-            col = 1
+        if (col > 4):
+            col = 2
             row += 1
         worksheet.write(row, col, i)
         col += 1
